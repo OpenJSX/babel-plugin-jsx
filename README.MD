@@ -8,7 +8,7 @@ var a = {
 
 export default (data) =>
 
-<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria:role="button">
+<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria-role="button">
   zzZzzzZ -- {data.text} 123
   <blah:Test></blah:Test>
   <blah.Test.zzz></blah.Test.zzz>
@@ -40,7 +40,7 @@ exports["default"] = function (data) {
     }, a, {
       blah: true,
       "ns:prop": true,
-      "aria:role": "button"
+      "aria-role": "button"
     }),
     children: ["zzZzzzZ -- ", data.text, " 123", {
       tag: "blah:Test",
@@ -55,5 +55,4 @@ exports["default"] = function (data) {
 };
 
 module.exports = exports["default"];
-
 ```
