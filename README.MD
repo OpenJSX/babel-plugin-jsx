@@ -1,10 +1,10 @@
-# JSX-IR Babel Plugin
+## JSX-IR Babel Plugin
 
-## Install
+### Install
 
 ```npm install --save-dev babel-plugin-jsx-ir```
 
-## Example of input
+### Example of input
 
 ```js
 var a = {
@@ -21,7 +21,7 @@ export default (data) =>
 </div>
 ```
 
-## Example of output
+### Example of output
 
 ```js
 "use strict";
