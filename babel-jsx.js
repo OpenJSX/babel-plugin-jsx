@@ -24,17 +24,13 @@ module.exports = function(babel) {
     },
     // @done
     JSXNamespacedName: function(node) {
-      node = t.identifier(node.namespace.name + ':' + node.name.name);
-      node.namespaced = true;
-
-      return node;
+      return t.literal(node.namespace.name + ':' + node.name.name);
     },
     // @done
     JSXMemberExpression: {
       exit: function(node) {
-        // node.computed = t.isLiteral(node.property);
-        // node.type = "MemberExpression";
-        return t.identifier(node.object.name + '.' + node.property.name);
+        node.computed = t.isLiteral(node.property);
+        node.type = 'MemberExpression';
       }
     },
     // @done
@@ -75,8 +71,24 @@ module.exports = function(babel) {
           props = t.literal(null);
         }
 
+        var tag;
+
+        if (t.isMemberExpression(node.name)) {
+          node = node.name;
+          tag = [];
+
+          do {
+            tag.push(node.property.name);
+          } while (t.isMemberExpression(node = node.object));
+
+          tag.push(node.name);
+          tag = t.literal(tag.join('.'));
+        } else {
+          tag = t.literal(node.name.name || node.name.value);
+        }
+
         var item = t.objectExpression([
-          t.property('init', t.identifier('tag'), t.literal(node.name.name)),
+          t.property('init', t.identifier('tag'), tag),
           t.property('init', t.identifier('props'), props)
         ]);
 
