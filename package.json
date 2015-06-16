@@ -1,0 +1,17 @@
+{
+  "name": "babel-plugin-jsx-ir",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Stolyar <nekr.fabula@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "esutils": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-core": "^5.5.5"
+  }
+}
