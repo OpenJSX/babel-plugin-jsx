@@ -1,3 +1,9 @@
+# JSX-IR Babel Plugin
+
+## Install
+
+```npm install --save-dev babel-plugin-jsx-ir```
+
 ## Example of input
 
 ```js
