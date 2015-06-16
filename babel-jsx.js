@@ -12,7 +12,6 @@ module.exports = function(babel) {
   var t = babel.types;
 
   return new babel.Transformer('jsx-ir', {
-    // @done
     JSXIdentifier: function (node) {
       if (node.name === 'this' && this.isReferenced()) {
         return t.thisExpression();
@@ -22,27 +21,22 @@ module.exports = function(babel) {
         return t.literal(node.name);
       }
     },
-    // @done
     JSXNamespacedName: function(node) {
       return t.literal(node.namespace.name + ':' + node.name.name);
     },
-    // @done
     JSXMemberExpression: {
       exit: function(node) {
         node.computed = t.isLiteral(node.property);
         node.type = 'MemberExpression';
       }
     },
-    // @done
     JSXEmptyExpression: function (node) {
       node.type = 'Literal';
       node.value = null;
     },
-    // @done
     JSXExpressionContainer: function(node) {
       return node.expression;
     },
-    // @done
     JSXAttribute: {
       enter: function(node) {
         var value = node.value;
@@ -59,7 +53,6 @@ module.exports = function(babel) {
         return t.inherits(t.property('init', name, value), node);
       }
     },
-    // @done
     JSXOpeningElement: {
       exit: function(node, parent, scope, file) {
         var props = node.attributes;
@@ -95,7 +88,6 @@ module.exports = function(babel) {
         return item;
       }
     },
-    // @done
     JSXElement: {
       exit: function(node) {
         var item = node.openingElement;
