@@ -1,12 +1,12 @@
+// Based on:
+// https://github.com/babel/babel/blob/8b096ac7057379fd698eea3a33a2f77a8311a363/src/babel/transformation/helpers/build-react-transformer.js
+
 var esutils = require('esutils');
 var isIdentifierNameES6 = esutils.keyword.isIdentifierNameES6;
-
-var DEFAULT_TAG_CALL = 'JSX.tag';
 
 // this.scope.hasBinding("name")` checks for local bindings
 // this.scope.hasOwnBinding("name")` only checks the current scope
 // this.scope.hasGlobal("name")`
-
 
 module.exports = function(babel) {
   var t = babel.types;
@@ -46,13 +46,13 @@ module.exports = function(babel) {
     JSXExpressionContainer: function(node) {
       return node.expression;
     },
-    // @???
+    // @done
     JSXAttribute: {
       enter: function(node) {
         var value = node.value;
 
         if (t.isLiteral(value) && typeof value.value === 'string') {
-          value.value = value.value.replace(/\n\s+/g, " ");
+          value.value = value.value.replace(/\n\s+/g, ' ');
         }
       },
 
@@ -144,7 +144,7 @@ function cleanChildren(child) {
 
     if (trimmedLine) {
       if (!isLastNonEmptyLine) {
-        trimmedLine += " ";
+        trimmedLine += ' ';
       }
 
       str += trimmedLine;
