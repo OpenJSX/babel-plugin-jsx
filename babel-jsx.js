@@ -65,24 +65,19 @@ module.exports = function(babel) {
     },
     // @done
     JSXOpeningElement: {
-      exit: function(node) {
+      exit: function(node, parent, scope, file) {
         var props = node.attributes;
 
-        props = props.map(function(prop) {
-          var propName = prop.key.name || prop.key.value;
-
-          if (isIdentifierNameES6(propName)) {
-            propName = t.identifier(propName);
-          } else {
-            propName = t.literal(propName);
-          }
-
-          return t.property('init', propName, prop.value);
-        });
+        if (props.length) {
+          // props = handleProps(props, scope, file, t);
+          props = handleSpreadProps(props, scope, file, t);
+        } else {
+          props = t.literal(null);
+        }
 
         var item = t.objectExpression([
           t.property('init', t.identifier('tag'), t.literal(node.name.name)),
-          t.property('init', t.identifier('props'), props.length ? t.objectExpression(props) : t.literal(null))
+          t.property('init', t.identifier('props'), props)
         ]);
 
         return item;
@@ -177,3 +172,84 @@ function buildChildren(children, t) {
 
   return elems;
 }
+
+function handleProps(props, scope, file, t) {
+  // scope.push({ id: t.identifier("id"), init: t.identifier("init") });
+  props = props.map(function(prop) {
+    var propName = prop.key.name || prop.key.value;
+
+    if (isIdentifierNameES6(propName)) {
+      propName = t.identifier(propName);
+    } else {
+      propName = t.literal(propName);
+    }
+
+    return t.property('init', propName, prop.value);
+  });
+
+  return t.objectExpression(props);
+}
+
+function handleSpreadProps(props, scope, file, t) {
+  var propsStack = [];
+  var objectsStack = [];
+
+  var pushProps = function () {
+    if (!propsStack.length) return;
+
+    objectsStack.push(t.objectExpression(propsStack));
+    propsStack = [];
+  };
+
+  var makeProp = function(prop) {
+    var propName = prop.key.name || prop.key.value;
+
+    if (isIdentifierNameES6(propName)) {
+      propName = t.identifier(propName);
+    } else {
+      propName = t.literal(propName);
+    }
+
+    return t.property('init', propName, prop.value);
+  };
+
+  for (var i = 0, len = props.length; i < len; i++) {
+    var prop = props[i];
+
+    if (t.isJSXSpreadAttribute(prop)) {
+      pushProps();
+      objectsStack.push(prop.argument);
+    } else {
+      propsStack.push(makeProp(prop));
+    }
+  }
+
+  pushProps();
+
+  if (objectsStack.length === 1) {
+    // only one object
+    props = objectsStack[0];
+  } else {
+    // looks like we have multiple objects
+    if (!t.isObjectExpression(objectsStack[0])) {
+      objectsStack.unshift(t.objectExpression([]));
+    }
+
+    // spread it
+    props = t.callExpression(
+      file.addHelper('extends'),
+      objectsStack
+    );
+
+    /*var propsKey = scope.generateUidIdentifier('props');
+
+    scope.push({
+      id: propsKey,
+      init: props
+    });
+
+    props = t.identifier(propsKey.name);*/
+  }
+
+  return props;
+};
