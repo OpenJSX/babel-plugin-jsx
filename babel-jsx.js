@@ -92,7 +92,7 @@ module.exports = function(babel) {
     JSXElement: {
       exit: function(node) {
         var item = node.openingElement;
-        var children = buildChildren(node.children);
+        var children = buildChildren(node.children, t);
 
         children = children.length ? t.arrayExpression(children) : t.literal(null);
         item.properties.push(
@@ -112,65 +112,68 @@ module.exports = function(babel) {
       // console.log(node);
     }
   });
-
-  function cleanJSXElementLiteralChild(child, args) {
-    var lines = child.value.split(/\r\n|\n|\r/);
-    var lastNonEmptyLine = 0;
-
-    for (var i = 0; i < lines.length; i++) {
-      if (lines[i].match(/[^ \t]/)) {
-        lastNonEmptyLine = i;
-      }
-    }
-
-    var str = "";
-
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-
-      var isFirstLine = i === 0;
-      var isLastLine = i === lines.length - 1;
-      var isLastNonEmptyLine = i === lastNonEmptyLine;
-
-      // replace rendered whitespace tabs with spaces
-      var trimmedLine = line.replace(/\t/g, " ");
-
-      // trim whitespace touching a newline
-      if (!isFirstLine) {
-        trimmedLine = trimmedLine.replace(/^[ ]+/, "");
-      }
-
-      // trim whitespace touching an endline
-      if (!isLastLine) {
-        trimmedLine = trimmedLine.replace(/[ ]+$/, "");
-      }
-
-      if (trimmedLine) {
-        if (!isLastNonEmptyLine) {
-          trimmedLine += " ";
-        }
-
-        str += trimmedLine;
-      }
-    }
-
-    if (str) args.push(t.literal(str));
-  }
-
-  function buildChildren(children) {
-    var elems = [];
-
-    for (var i = 0; i < children.length; i++) {
-      var child = children[i];
-
-      if (t.isLiteral(child) && typeof child.value === "string") {
-        cleanJSXElementLiteralChild(child, elems);
-        continue;
-      }
-
-      elems.push(child);
-    }
-
-    return elems;
-  }
 };
+
+
+function cleanChildren(child) {
+  var lines = child.value.split(/\r\n|\n|\r/);
+  var lastNonEmptyLine = 0;
+
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].match(/[^ \t]/)) {
+      lastNonEmptyLine = i;
+    }
+  }
+
+  var str = '';
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+
+    var isFirstLine = i === 0;
+    var isLastLine = i === lines.length - 1;
+    var isLastNonEmptyLine = i === lastNonEmptyLine;
+
+    // replace rendered whitespace tabs with spaces
+    var trimmedLine = line.replace(/\t/g, ' ');
+
+    // trim whitespace touching a newline
+    if (!isFirstLine) {
+      trimmedLine = trimmedLine.replace(/^[ ]+/, '');
+    }
+
+    // trim whitespace touching an endline
+    if (!isLastLine) {
+      trimmedLine = trimmedLine.replace(/[ ]+$/, '');
+    }
+
+    if (trimmedLine) {
+      if (!isLastNonEmptyLine) {
+        trimmedLine += " ";
+      }
+
+      str += trimmedLine;
+    }
+  }
+
+  return str;
+}
+
+function buildChildren(children, t) {
+  var elems = [];
+
+  for (var i = 0; i < children.length; i++) {
+    var child = children[i];
+
+    if (t.isLiteral(child) && typeof child.value === 'string') {
+      var str = cleanChildren(child, t);
+      if (str) elems.push(t.literal(str));
+
+      continue;
+    }
+
+    elems.push(child);
+  }
+
+  return elems;
+}
