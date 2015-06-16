@@ -8,7 +8,7 @@ var a = {
 
 export default (data) =>
 
-<div  cui:control-zz="tested" data-test="123" {... a} blah cui:lol aria:role="ggg">
+<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria:role="button">
   zzZzzzZ -- {data.text} 123
   <blah:Test></blah:Test>
   <blah.Test.zzz></blah.Test.zzz>
@@ -35,12 +35,12 @@ exports["default"] = function (data) {
   return {
     tag: "div",
     props: _extends({
-      "cui:control-zz": "tested",
+      "foo-bar": "baz",
       "data-test": "123"
     }, a, {
       blah: true,
-      "cui:lol": true,
-      "aria:role": "ggg"
+      "ns:prop": true,
+      "aria:role": "button"
     }),
     children: ["zzZzzzZ -- ", data.text, " 123", {
       tag: "blah:Test",

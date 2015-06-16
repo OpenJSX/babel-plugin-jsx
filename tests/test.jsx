@@ -5,7 +5,7 @@ var a = {
 
 export default (data) =>
 
-<div  cui:control-zz="tested" data-test="123" {... a} blah cui:lol aria:role="ggg">
+<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria:role="button">
   zzZzzzZ -- {data.text} 123
   <blah:Test></blah:Test>
   <blah.Test.zzz></blah.Test.zzz>
