@@ -9,7 +9,7 @@ var helpers = require('./helpers');
 // this.scope.hasOwnBinding("name")` only checks the current scope
 // this.scope.hasGlobal("name")`
 
-module.exports = function(babel) {
+module.exports = function(babel, options) {
   var t = babel.types;
 
   return new babel.Transformer('jsx-ir', {
