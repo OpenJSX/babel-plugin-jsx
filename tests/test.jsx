@@ -3,6 +3,10 @@ var a = {
   foo: 'baz'
 };
 
+var div = function() {
+  return {};
+};
+
 export default (data) =>
 
 <div foo-bar="baz" data-test="123" {... a} blah ns:prop aria-role="button">

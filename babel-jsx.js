@@ -11,6 +11,8 @@ var helpers = require('./helpers');
 
 module.exports = function(babel, options) {
   var t = babel.types;
+  var captureScope = options && options.captureScope;
+  var builtins = captureScope && options.builtins;
 
   return new babel.Transformer('jsx-ir', {
     JSXIdentifier: function (node) {
@@ -65,26 +67,45 @@ module.exports = function(babel, options) {
           props = t.literal(null);
         }
 
+        var item;
         var tag;
+        var getElementObject = function(tag) {
+          return t.objectExpression([
+            t.property('init', t.identifier('tag'), t.literal(tag)),
+            t.property('init', t.identifier('props'), props)
+          ])
+        };
 
-        if (t.isMemberExpression(node.name)) {
-          node = node.name;
-          tag = [];
+        if (captureScope && !t.isMemberExpression(node.name)) {
+          if (t.isMemberExpression(node.name)) {
+            // not supported yet
+          } else {
+            tag = node.name;
 
-          do {
-            tag.push(node.property.name);
-          } while (t.isMemberExpression(node = node.object));
-
-          tag.push(node.name);
-          tag = t.literal(tag.join('.'));
+            if ('name' in tag && this.scope.hasBinding(tag.name) && !helpers.checkBuiltins(builtins, tag.name)) {
+              item = t.callExpression(tag, [getElementObject(tag.name)]);
+            } else {
+              item = getElementObject(tag.name || tag.value);
+            }
+          }
         } else {
-          tag = t.literal(node.name.name || node.name.value);
-        }
+          if (t.isMemberExpression(node.name)) {
+            node = node.name;
+            tag = [];
 
-        var item = t.objectExpression([
-          t.property('init', t.identifier('tag'), tag),
-          t.property('init', t.identifier('props'), props)
-        ]);
+            do {
+              tag.push(node.property.name);
+            } while (t.isMemberExpression(node = node.object));
+
+            tag.push(node.name);
+            tag = tag.join('.');
+          } else {
+            tag = node.name;
+            tag = tag.name || tag.value;
+          }
+
+          item = getElementObject(tag);
+        }
 
         return item;
       }
@@ -93,9 +114,17 @@ module.exports = function(babel, options) {
       exit: function(node) {
         var item = node.openingElement;
         var children = helpers.buildChildren(node.children, t);
+        var object;
 
         children = children.length ? t.arrayExpression(children) : t.literal(null);
-        item.properties.push(
+
+        if (t.isCallExpression(item)) {
+          object = item.arguments[0];
+        } else {
+          object = item;
+        }
+
+        object.properties.push(
           t.property('init', t.identifier('children'), children)
         );
 

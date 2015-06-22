@@ -144,9 +144,36 @@ function handleSpreadProps(props, scope, file, t) {
   return props;
 }
 
+function checkBuiltins(builtins, tag) {
+  if (!builtins) return false;
+
+  if (builtins instanceof RegExp) {
+    return builtins.test(tag);
+  }
+
+  if (Array.isArray(builtins)) {
+    var match = false;
+
+    for (var i = 0, len = builtins.length; i < len; i++) {
+      var check = builtins[i];
+
+      if (typeof check === 'string') {
+        match = check === tag;
+      } else if (check instanceof RegExp) {
+        match = check.test(tag);
+      }
+
+      if (match) return true;
+    }
+  }
+
+  return false;
+}
+
 module.exports = {
   cleanChildren: cleanChildren,
   buildChildren: buildChildren,
   handleProps: handleProps,
-  handleSpreadProps: handleSpreadProps
+  handleSpreadProps: handleSpreadProps,
+  checkBuiltins: checkBuiltins
 };
