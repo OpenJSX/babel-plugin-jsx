@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-jsx-ir",
+  "name": "babel-plugin-jsx",
   "version": "0.0.2",
   "description": "",
   "main": "index.js",
