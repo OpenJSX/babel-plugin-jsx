@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-jsx",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.3",
+  "description": "Plugin for Babel which generates JSX intermediate representation",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
