@@ -14,5 +14,5 @@
   "devDependencies": {
     "babel-core": "^5.5.5"
   },
-  "respository": "jsx-ir/babel-plugin-jsx"
+  "repository": "jsx-ir/babel-plugin-jsx"
 }
