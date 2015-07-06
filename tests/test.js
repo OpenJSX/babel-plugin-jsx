@@ -3,8 +3,8 @@ var fs = require('fs');
 var path = require('path');
 
 
-var jsx = require('./gen');
-var code = fs.readFileSync(path.join(__dirname, 'tests/test.jsx'));
+var jsx = require('../gen');
+var code = fs.readFileSync(path.join(__dirname, 'test.jsx'));
 
 var result = babel.transform(code, {
   plugins: [jsx({})],

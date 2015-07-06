@@ -9,7 +9,7 @@ var div = function() {
 
 export default (data) =>
 
-<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria-role="button">
+<div foo-bar="baz" b={this} a={this.test} data-test="123" {... a} blah ns:prop aria-role="button">
   zzZzzzZ -- {data.text} 123
   <blah:Test></blah:Test>
   <blah.Test.zzz></blah.Test.zzz>

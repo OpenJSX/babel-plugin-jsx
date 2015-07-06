@@ -16,10 +16,14 @@ var div = function div() {
 };
 
 exports["default"] = function (data) {
+  var a = undefined.test;
+
   return {
     tag: "div",
     props: _extends({
       "foo-bar": "baz",
+      b: undefined,
+      a: undefined.test,
       "data-test": "123"
     }, a, {
       blah: true,
