@@ -1,8 +1,10 @@
 ## JSX-IR Babel Plugin
 
+This plugin produces [JSX-IR](https://github.com/jsx-ir/spec) output of given JSX source. It's intended to use with [```jsx-runtime```](https://github.com/jsx-ir/jsx-runtime) and one or more its [renders](https://github.com/jsx-ir?utf8=%E2%9C%93&query=jsx-to).
+
 ### Install
 
-```npm install --save-dev babel-plugin-jsx-ir```
+```npm install --save-dev babel-plugin-jsx```
 
 ### Example of input
 
