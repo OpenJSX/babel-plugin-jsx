@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-jsx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin for Babel which generates JSX intermediate representation",
   "main": "index.js",
   "scripts": {
