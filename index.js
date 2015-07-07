@@ -1,2 +1,5 @@
 var gen = require('./gen');
-module.exports = gen();
+
+module.exports = gen({
+  captureScope: true
+});
