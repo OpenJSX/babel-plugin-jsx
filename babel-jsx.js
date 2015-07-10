@@ -4,6 +4,7 @@
 var esutils = require('esutils');
 var isIdentifierNameES6 = esutils.keyword.isIdentifierNameES6;
 var helpers = require('./helpers');
+var MissingScopeError = require('./missing_scope_error');
 
 // this.scope.hasBinding("name")` checks for local bindings
 // this.scope.hasOwnBinding("name")` only checks the current scope
@@ -13,6 +14,7 @@ module.exports = function(babel, options) {
   var t = babel.types;
   var captureScope = options && options.captureScope;
   var builtins = captureScope && options.builtins;
+  var hasBuiltins = Array.isArray(builtins);
 
   return new babel.Transformer('jsx-ir', {
     JSXIdentifier: function (node) {
@@ -77,22 +79,27 @@ module.exports = function(babel, options) {
         };
 
         if (captureScope) {
+          var tagString;
+          var inScope;
+
           if (t.isMemberExpression(node.name)) {
             tag = helpers.readMemberExpression(node.name, t);
-
-            if (this.scope.hasBinding(tag[0]) && !helpers.checkBuiltins(builtins, tag.name)) {
-              item = t.callExpression(node.name, [getElementObject(tag.join('.'))]);
-            } else {
-              item = getElementObject(tag.join('.'));
-            }
+            tagString = tag.join('.');
+            inScope = this.scope.hasBinding(tag[0]);
           } else {
             tag = node.name;
+            tagString =  'name' in tag ? tag.name : tag.value;
+            inScope = 'name' in tag && this.scope.hasBinding(tagString);
+          }
 
-            if ('name' in tag && this.scope.hasBinding(tag.name) && !helpers.checkBuiltins(builtins, tag.name)) {
-              item = t.callExpression(tag, [getElementObject(tag.name)]);
-            } else {
-              item = getElementObject(tag.name || tag.value);
-            }
+          if ((!hasBuiltins && !inScope) || helpers.checkBuiltins(builtins, tagString)) {
+            item = getElementObject(tagString);
+          } else if (inScope) {
+            item = t.callExpression(node.name, [getElementObject(tagString)]);
+          } else {
+            throw new MissingScopeError(
+              'Tag <' + tagString + '> is not a built-in and is missed from the scope'
+            );
           }
         } else {
           if (t.isMemberExpression(node.name)) {
