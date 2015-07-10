@@ -12,7 +12,8 @@
     "esutils": "^2.0.2"
   },
   "devDependencies": {
-    "babel-core": "^5.5.5"
+    "babel-core": "^5.5.5",
+    "mocha": "^2.2.5"
   },
   "keywords": [
     "babel",
