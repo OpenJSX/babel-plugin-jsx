@@ -76,9 +76,15 @@ module.exports = function(babel, options) {
           ])
         };
 
-        if (captureScope && !t.isMemberExpression(node.name)) {
+        if (captureScope) {
           if (t.isMemberExpression(node.name)) {
-            // not supported yet
+            tag = helpers.readMemberExpression(node.name, t);
+
+            if (this.scope.hasBinding(tag[0]) && !helpers.checkBuiltins(builtins, tag.name)) {
+              item = t.callExpression(node.name, [getElementObject(tag.join('.'))]);
+            } else {
+              item = getElementObject(tag.join('.'));
+            }
           } else {
             tag = node.name;
 
@@ -90,14 +96,7 @@ module.exports = function(babel, options) {
           }
         } else {
           if (t.isMemberExpression(node.name)) {
-            node = node.name;
-            tag = [];
-
-            do {
-              tag.push(node.property.name);
-            } while (t.isMemberExpression(node = node.object));
-
-            tag.push(node.name);
+            tag = helpers.readMemberExpression(node.name, t);
             tag = tag.join('.');
           } else {
             tag = node.name;

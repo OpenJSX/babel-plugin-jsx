@@ -170,10 +170,23 @@ function checkBuiltins(builtins, tag) {
   return false;
 }
 
+function readMemberExpression(node, t) {
+  var tag = [];
+
+  do {
+    tag.push(node.property.name);
+  } while (t.isMemberExpression(node = node.object));
+
+  tag.push(node.name);
+
+  return tag.reverse();
+}
+
 module.exports = {
   cleanChildren: cleanChildren,
   buildChildren: buildChildren,
   handleProps: handleProps,
   handleSpreadProps: handleSpreadProps,
-  checkBuiltins: checkBuiltins
+  checkBuiltins: checkBuiltins,
+  readMemberExpression: readMemberExpression
 };

@@ -7,6 +7,12 @@ var Test = function() {
   return {};
 };
 
+var blah = {
+  Test: {
+    zzz: function() {}
+  }
+};
+
 export default (data) =>
 
 <Test foo-bar="baz" b={this} a={this.test} data-test="123" {... a} blah ns:prop aria-role="button">

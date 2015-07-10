@@ -15,6 +15,12 @@ var Test = function Test() {
   return {};
 };
 
+var blah = {
+  Test: {
+    zzz: function zzz() {}
+  }
+};
+
 exports["default"] = function (data) {
   return Test({
     tag: "Test",
@@ -32,11 +38,11 @@ exports["default"] = function (data) {
       tag: "blah:Test",
       props: null,
       children: null
-    }, {
-      tag: "zzz.Test.blah",
+    }, blah.Test.zzz({
+      tag: "blah.Test.zzz",
       props: null,
       children: null
-    }]
+    })]
   });
 };
 
