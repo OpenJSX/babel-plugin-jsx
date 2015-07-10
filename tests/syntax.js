@@ -18,7 +18,7 @@ var pluginScoped = jsx({
 
 describe('syntax', function() {
   dir.forEach(function(dirName) {
-    var header = require(path.join(testsFolder, dirName, 'header.js'));
+    var header = require(path.join(testsFolder, dirName, '_header.js'));
 
     if (header.builtins) {
       var pluginBuiltins = jsx({
