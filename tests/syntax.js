@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var vm = require('vm');
 var babel = require('babel-core');
 var jsx = require('../gen');
 var Module = require('module');
