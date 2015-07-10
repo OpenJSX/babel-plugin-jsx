@@ -1,4 +1,4 @@
-var jsx = require('./babel-jsx');
+var jsx = require('./lib/babel-jsx');
 
 module.exports = function(options) {
   return function(babel) {

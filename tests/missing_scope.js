@@ -1,7 +1,7 @@
 var babel = require('babel-core');
 var jsx = require('../gen');
 var assert = require('assert');
-var MissingScopeError = require('../missing_scope_error');
+var MissingScopeError = require('../lib/missing_scope_error');
 
 var pluginEmptyBuiltins = jsx({
   captureScope: true,
