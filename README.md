@@ -103,3 +103,7 @@ There is some number of options, first and main option is ```captureScope```:
   }]
 })
 ```
+
+### License
+
+[MIT](LICESE.md)
