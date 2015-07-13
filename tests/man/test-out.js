@@ -35,7 +35,7 @@ exports["default"] = function (data) {
       "aria-role": "button"
     }),
     children: [{
-      tag: ["ZZZ", ZZZ],
+      tag: "ZZZ",
       props: null,
       children: null
     }, "zzZzzzZ -- ", data.text, " 123", {

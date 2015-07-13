@@ -62,13 +62,17 @@ There is some number of options, first and main option is ```captureScope```:
 * ```builtins``` [Array<string>] - only has effect when ``captureScope`` is ``true``. This options allows number of built-ins tags so plugin won't need to look for when in the scope. Usage of this options assumes that _renderer_ knows how to handle listed built-in tags. If this option is provided and used tag is not a _built-in_ and it's not in the current _scope_ when compilation error will be thrown.
 * ```throwOnMissing``` [boolean] - only has effect when ``captureScope`` and ``builtins`` options are used simultaneously. By default this is ``true``, setting it to ``false`` means that plugin won't throw compilation error for missed tags, instead it will produce normal _scope output_ and if variable is missing you will get an runtime error.
 
-### Example of input
+### Examples
 
-```js
-<div foo-bar="baz" data-test="123" {... a} blah ns:prop aria-role="button">
-  zzZzzzZ -- {data.text} 123
-  <blah:Test></blah:Test>
-  <blah.Test.zzz></blah.Test.zzz>
+#### Example of input
+
+```xml
+<div className="box">
+  <List>
+    <div className="list-wrap">
+      <ListItem index={ index } {... val } />
+    </div>
+  </List>
 </div>
 ```
 
@@ -77,22 +81,25 @@ There is some number of options, first and main option is ```captureScope```:
 ```js
 ({
   tag: "div",
-  props: _extends({
-    "foo-bar": "baz",
-    "data-test": "123"
-  }, a, {
-    blah: true,
-    "ns:prop": true,
-    "aria-role": "button"
-  }),
-  children: ["zzZzzzZ -- ", data.text, " 123", {
-    tag: "blah:Test",
+  props: {
+    className: "box"
+  },
+  children: [{
+    tag: "List",
     props: null,
-    children: null
-  }, {
-    tag: "zzz.Test.blah",
-    props: null,
-    children: null
+    children: [{
+      tag: "div",
+      props: {
+        className: "list-wrap"
+      },
+      children: [{
+        tag: "ListItem",
+        props: _extends({
+          index: index
+        }, val),
+        children: null
+      }]
+    }]
   }]
-});
+})
 ```

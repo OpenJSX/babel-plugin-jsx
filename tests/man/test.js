@@ -8,8 +8,7 @@ var code = fs.readFileSync(path.join(__dirname, 'test.jsx'));
 
 var result = babel.transform(code, {
   plugins: [jsx({
-    captureScope: true,
-    builtins: []
+    captureScope: true
   })],
   blacklist: ['react']
 });
