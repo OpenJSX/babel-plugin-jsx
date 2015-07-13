@@ -1,3 +1,5 @@
+let assert = require('assert');
+
 export var input = () => {
   return <div
     xml:string="string"
@@ -10,7 +12,7 @@ export var input = () => {
 };
 
 export var simple = () => {
-  return {
+  assert.deepEqual(input(), {
     tag: 'div',
     props: {
       'xml:string': 'string',
@@ -21,5 +23,5 @@ export var simple = () => {
       'xml:num_val': 1
     },
     children: null
-  };
+  });
 };

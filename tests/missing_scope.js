@@ -1,15 +1,15 @@
 var babel = require('babel-core');
 var jsx = require('../gen');
 var assert = require('assert');
-var MissingScopeError = require('../lib/missing_scope_error');
 
 var pluginEmptyBuiltins = jsx({
   captureScope: true,
-  builtins: []
+  builtins: [],
+  throwOnMissing: true
 });
 
 describe('missing_scope', function() {
-  it('should miss', function() {
+  it('should throw', function() {
     assert.throws(function() {
       var result = babel.transform(code, {
         plugins: [pluginEmptyBuiltins],
@@ -17,7 +17,6 @@ describe('missing_scope', function() {
       });
     }, function(err) {
       if (
-        err instanceof MissingScopeError &&
         err.message.indexOf('<CustomTag>') !== -1
       ) {
         return true;

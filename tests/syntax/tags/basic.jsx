@@ -1,31 +1,33 @@
-export var input = () => {
-  function div() {
-    return <span></span>
-  }
+let assert = require('assert');
 
+function div() {
+  return <span></span>
+}
+
+export var input = () => {
   return <div></div>;
 };
 
 export var simple = () => {
-  return {
+  assert.deepEqual(input(), {
     tag: 'div',
     props: null,
     children: null
-  };
+  });
 };
 
 export var scoped = () => {
-  return {
-    tag: 'span',
+  assert.deepEqual(input(), {
+    tag: ['div', div],
     props: null,
     children: null
-  };
+  });
 };
 
 export var builtins = () => {
-  return {
+  assert.deepEqual(input(), {
     tag: 'div',
     props: null,
     children: null
-  };
+  });
 };

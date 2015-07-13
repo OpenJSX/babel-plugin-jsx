@@ -1,3 +1,5 @@
+let assert = require('assert');
+
 export var input = () => {
   let override = {
     string: false,
@@ -21,7 +23,7 @@ export var input = () => {
 };
 
 export var simple = () => {
-  return {
+  return assert.deepEqual(input(), {
     tag: 'div',
     props: {
       string: false,
@@ -32,5 +34,5 @@ export var simple = () => {
       num_val: false
     },
     children: null
-  };
+  });
 };

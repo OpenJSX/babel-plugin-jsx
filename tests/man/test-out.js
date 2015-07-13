@@ -22,8 +22,8 @@ var blah = {
 };
 
 exports["default"] = function (data) {
-  return Test({
-    tag: "Test",
+  return {
+    tag: ["Test", Test],
     props: _extends({
       "foo-bar": "baz",
       b: undefined,
@@ -34,16 +34,24 @@ exports["default"] = function (data) {
       "ns:prop": true,
       "aria-role": "button"
     }),
-    children: ["zzZzzzZ -- ", data.text, " 123", {
+    children: [{
+      tag: ["ZZZ", ZZZ],
+      props: null,
+      children: null
+    }, "zzZzzzZ -- ", data.text, " 123", {
       tag: "blah:Test",
       props: null,
       children: null
-    }, blah.Test.zzz({
-      tag: "blah.Test.zzz",
+    }, {
+      tag: ["blah.Test.zzz", blah.Test.zzz],
       props: null,
       children: null
-    })]
-  });
+    }, {
+      tag: "blah-blah",
+      props: null,
+      children: null
+    }]
+  };
 };
 
 module.exports = exports["default"];

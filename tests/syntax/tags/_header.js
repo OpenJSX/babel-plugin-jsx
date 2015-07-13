@@ -1,3 +1,3 @@
 exports.title = ''
 exports.builtins = ['div', 'span'];
-exports.files = ['basic.jsx', 'member_expression.jsx'];
+exports.files = ['basic.jsx', 'member_expression.jsx', 'namespaced.jsx'];

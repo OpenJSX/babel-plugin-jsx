@@ -9,11 +9,13 @@ var testsFolder = path.join(__dirname, 'syntax');
 var dir = fs.readdirSync(testsFolder);
 
 var pluginSimple = jsx({
-  captureScope: false
+  captureScope: false,
+  throwOnMissing: false
 });
 
 var pluginScoped = jsx({
-  captureScope: true
+  captureScope: true,
+  throwOnMissing: false
 });
 
 describe('syntax', function() {
@@ -23,7 +25,8 @@ describe('syntax', function() {
     if (header.builtins) {
       var pluginBuiltins = jsx({
         captureScope: true,
-        builtins: header.builtins
+        builtins: header.builtins,
+        throwOnMissing: false
       })
     }
 
@@ -46,22 +49,18 @@ describe('syntax', function() {
 
       Object.keys(map).forEach(function(key) {
         var plugin = map[key];
-
         if (!plugin) return;
 
-        it(key, function() {
-          var result = babel.transform(file, {
-            plugins: [plugin],
-            blacklist: ['react']
-          });
-
-          var mod = requireString(result.code, filePath);
-          var input = mod.input();
-
-          if (mod[key]) {
-            assert.deepEqual(input, mod[key]());
-          }
+        var result = babel.transform(file, {
+          plugins: [plugin],
+          blacklist: ['react']
         });
+
+        var mod = requireString(result.code, filePath);
+
+        if (mod[key]) {
+          it(key, mod[key]);
+        }
       });
     }
   });

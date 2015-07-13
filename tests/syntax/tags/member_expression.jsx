@@ -1,19 +1,21 @@
-export var input = () => {
-  let UI = {
-    Views: {
-      Custom: function CustomView() {
-        return <div>CustomView</div>
-      }
-    }
-  };
+let assert = require('assert');
 
+let UI = {
+  Views: {
+    Custom: function CustomView() {
+      return <div>CustomView</div>
+    }
+  }
+};
+
+export var input = () => {
   return <UI.Views.Custom>
     <div>DIV</div>
   </UI.Views.Custom>;
 };
 
 export var simple = () => {
-  return {
+  assert.deepEqual(input(), {
     tag: 'UI.Views.Custom',
     props: null,
     children: [{
@@ -21,21 +23,29 @@ export var simple = () => {
       props: null,
       children: ['DIV']
     }]
-  };
+  });
 };
 
 export var scoped = () => {
-  return {
-    tag: 'div',
+  assert.deepEqual(input(), {
+    tag: ['UI.Views.Custom', UI.Views.Custom],
     props: null,
-    children: ['CustomView']
-  };
+    children: [{
+      tag: 'div',
+      children: ['DIV'],
+      props: null
+    }]
+  });
 };
 
 export var builtins = () => {
-  return {
-    tag: 'div',
+  assert.deepEqual(input(), {
+    tag: ['UI.Views.Custom', UI.Views.Custom],
     props: null,
-    children: ['CustomView']
-  };
+    children: [{
+      tag: 'div',
+      children: ['DIV'],
+      props: null
+    }]
+  });
 };

@@ -1,31 +1,68 @@
-export var input = () => {
-  function div() {
-    return <span></span>
-  }
+let assert = require('assert');
 
-  return <div></div>;
+function div() {
+  return <span></span>
+}
+
+export var input = () => {
+  return <div>
+    <span></span>
+    <Custom></Custom>
+    <Member.Tag></Member.Tag>
+    <ns:Tag></ns:Tag>
+  </div>;
 };
 
 export var simple = () => {
-  return {
+  return assert.deepEqual(input(), {
     tag: 'div',
     props: null,
-    children: null
-  };
+    children: [{
+      tag: 'span',
+      children: null,
+      props: null
+    }, {
+      tag: 'Custom',
+      children: null,
+      props: null
+    }, {
+      tag: 'Member.Tag',
+      children: null,
+      props: null
+    }, {
+      tag: 'ns:Tag',
+      children: null,
+      props: null
+    }]
+  });
 };
 
 export var scoped = () => {
-  return {
-    tag: 'span',
+  assert.deepEqual(input(), {
+    tag: ['div', div],
     props: null,
-    children: null
-  };
+    children: [{
+      tag: 'span',
+      children: null,
+      props: null
+    }, {
+      tag: 'Custom',
+      children: null,
+      props: null
+    }, {
+      tag: 'Member.Tag',
+      children: null,
+      props: null
+    }, {
+      tag: 'ns:Tag',
+      children: null,
+      props: null
+    }]
+  });
 };
 
 export var builtins = () => {
-  return {
-    tag: 'div',
-    props: null,
-    children: null
-  };
+  assert.throws(function() {
+    input();
+  }, /Custom is not defined/);
 };
