@@ -1,3 +1,5 @@
+"use strict";
+
 var babel = require('babel-core');
 var jsx = require('../gen');
 var assert = require('assert');

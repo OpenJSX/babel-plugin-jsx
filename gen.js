@@ -1,3 +1,5 @@
+"use strict";
+
 var jsx = require('./lib/babel-jsx');
 
 module.exports = function(options) {
