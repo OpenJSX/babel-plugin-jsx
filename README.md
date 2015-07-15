@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jsx-ir/babel-plugin-jsx.svg?branch=master)](https://travis-ci.org/jsx-ir/babel-plugin-jsx)
+
 ## Babel Plugin for generating JSX-IR
 
 ### Overview
