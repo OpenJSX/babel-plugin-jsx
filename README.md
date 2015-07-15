@@ -1,4 +1,4 @@
-## JSX Babel Plugin
+# Babel Plugin for generating JSX-IR
 
 ### Overview
 
@@ -6,7 +6,7 @@ This plugin produces [JSX-IR](https://github.com/jsx-ir/spec) output of given JS
 
 ### Installation
 
-```npm install --save-dev babel-plugin-jsx```
+```npm install  babel-plugin-jsx```
 
 ### Usage
 
