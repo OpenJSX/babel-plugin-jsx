@@ -1,4 +1,4 @@
-# Babel Plugin for generating JSX-IR
+## Babel Plugin for generating JSX-IR
 
 ### Overview
 
