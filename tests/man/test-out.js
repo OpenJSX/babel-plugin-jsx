@@ -3,9 +3,6 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var a = {
   zzz: 134,
   foo: 'baz'
@@ -32,7 +29,7 @@ var meta = function meta() {
 exports['default'] = function (data) {
   ({
     tag: ['Test', Test],
-    props: _extends({
+    props: [{
       'foo-bar': 'baz',
       b: undefined,
       a: undefined.test,
@@ -41,10 +38,12 @@ exports['default'] = function (data) {
       blah: true,
       'ns:prop': true,
       'aria-role': 'button'
-    }),
+    }],
     children: [{
       tag: 'ZZZ',
-      props: null,
+      props: {
+        a: 'b'
+      },
       children: null
     }, 'zzZzzzZ -- ', data.text, ' 123', {
       tag: 'blah:Test',
